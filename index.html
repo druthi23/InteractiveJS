@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Scoped CSS variables and JS</title>
+    </head>
+    <body>
+        <h2>Update CSS Variables with <span class='h1'>JS</span></h2>
+
+        <div class="controls">
+            <label for="spacing">Spacing:</label>
+            <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+
+            <label for="blur">Blur:</label>
+            <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+
+            <label for="base">Base Color:</label>
+            <input type="color" name="base" value="#ffc600">
+        </div>
+
+        <img src="https://images.unsplash.com/photo-1548602088-9d12a4f9c10f?q=80&w=1152&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt=""/>
+        <style>
+           :root{
+            --base:#5b6ed8;
+            --spacing:10px;
+            --blur:5px;
+           }
+
+           img{
+             padding:var(--spacing);
+             background: var(--base);
+             filter: blur(var(--blur));
+             width:100%;
+             max-width: 100%;
+             height:auto;
+             overflow:hidden;
+
+           }
+
+           .h1{
+            color: var(--base);
+           }
+
+           body{
+            text-align: center;
+           } 
+
+           body{
+            background: #193549;
+            color: white;
+            font-family: 'helvetica neue', sans-serif;
+            font-weight: 100;
+            font-size: 2.5rem; 
+            margin: 0;
+            padding: 2rem;
+           }
+
+           .controls{
+            margin-bottom: 5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+           }
+
+           a{
+            color: var(--base);
+            text-decoration: none;
+           }
+
+           input{
+            width: 100px;
+            max-width: 300px;
+           }
+
+ @media (max-width: 768px) {
+    body {
+        font-size: 2rem;
+        padding: 1.5rem;
+    }
+
+    h2 {
+        font-size: 2.5rem;
+    }
+
+    .controls {
+        gap: 1rem;
+        margin-bottom: 4rem;
+    }
+
+    input {
+        max-width: 250px;
+    }
+
+    img {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 1.8rem;
+        padding: 1rem;
+    }
+
+    h2 {
+        font-size: 2rem;
+    }
+
+    .controls {
+        gap: 0.8rem;
+        margin-bottom: 3rem;
+    }
+
+    input {
+        max-width: 200px;
+    }
+
+    img {
+        max-width: 100%;
+    }
+}
+        </style>
+
+        <script>
+            const inputs=document.querySelectorAll('.controls input');
+
+            function handleUpdate(){
+                const suffix = this.dataset.sizing||''; //'' because color doesnt have sizing and we'll end up getting undefined 
+                //console.log(this.name); blur, spacing, color
+                document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+            }
+
+            inputs.forEach(input=>input.addEventListener('change', handleUpdate));
+            inputs.forEach(input=>input.addEventListener('mousemove', handleUpdate));
+        </script>
+    </body>
+</html>
